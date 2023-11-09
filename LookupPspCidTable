@@ -1,0 +1,49 @@
+$$ nt!ExpLookupHandleTableEntry - Windbg 스크립트 내부 구현
+$$ 작성 버전 : Windows 10 Kernel Version 19041 MP (8 procs) Free x64 
+$$ 사용 방법 : LookupPspCidTable [pid]
+$$ 작성일 : 2022-02-24
+$$ 작성자 : cshelldll
+
+r $t0 = poi(nt!PspCidTable)
+r $t1 = ${$arg1} & 0xFFFFFFFFFFFFFFFC
+
+.if (@$t1 < poi(@$t0))
+{
+	r $t2 = poi(@$t0 + 0x08)
+	r $t3 = @$t2 & 0x0000FFFF & 3
+	
+	.if (@$t3 == 1)
+	{
+		$$ 대부분의 경우 해당 케이스로 빠짐.
+		
+		r $t4 = @$t1 >> 0x0A
+		r $t1 = @$t1 & 0x03FF
+		r $t5 = poi(@$t2 + (@$t4 * 8) - 0x01)
+		
+		.printf "Case 1.\n"
+		dqs (@$t5 + @$t1 * 4) L? 2
+	}
+	.elsif (@$t3 == 0)
+	{
+		$$ 테스트 X 구현만 미리함.
+		
+		.printf "Case 2.\n"
+		dqs (@$t2 + @$t1 * 4) L? 2
+	}
+	.else
+	{
+		$$ 테스트 X 구현만 미리함.
+		
+		r $t4 = @$t1 >> 0x0A
+		r $t5 = @$t4
+		r $t4 = @$t4 &0x01FF
+		r $t5 = @$t5 >> 0x09
+		r $t1 = @$t1 & 0x03FF
+		
+		r $t5 = poi(@$t2 + @$t5 * 8 - 2)
+		r $t5 = poi(@$t5 + @$t4 * 8)
+		
+		.printf "Case 3.\n"
+		dqs (@$t5 + @$t1 * 4) L? 2
+	}
+}
