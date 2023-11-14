@@ -1,0 +1,24 @@
+$$ GetObjectTypeList
+$$ 작성 버전 : Windows 10 Kernel Version 19041 MP (4 procs) Free x64 
+$$ 사용 방법 : GetObjectTypeList
+$$ 작성일 : 2023-11-14
+$$ 작성자 : cshelldll
+
+$$ ProcessEntry
+r $t0 = poi(nt!PsActiveProcessHead)-448 
+r $t1 = poi(@$t0-18) & 0xff
+r $t2 = ((@$t0-30) >> 8) & 0xff
+r $t3 = poi(ObHeaderCookie) & 0xff
+
+r $t4 = 0
+.while(@$t4 < 255)
+{
+	.printf "[%d]", @$t4
+    eb (@$t0 - 0x18) (@$t2 ^ @$t3 ^ @$t4)
+	!object $t0 0
+	
+	r $t4 = @$t4 + 1
+}
+
+// Restore ProcessType
+eb (@$t0 - 0x18) (@$t2 ^ @$t3 ^ 7)
