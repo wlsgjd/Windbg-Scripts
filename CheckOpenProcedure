@@ -1,0 +1,22 @@
+$$ OpenProcedure 후킹 체크
+$$ 작성 버전 : Windows 10 Kernel Version 19041 MP (4 procs) Free x64 
+$$ 사용 방법 : CheckOpenProcedure
+$$ 작성일 : 2022-03-16
+$$ 작성자 : cshelldll
+
+r $t0 = poi(nt!PsProcessType)
+
+$$ object_type->TypeInfo->OpenProcedure
+r $t1 = poi(@$t0 + 0x78)
+
+.if (@$t1 != nt!PspProcessOpen)
+{
+	.printf "hooked openprocedure.\n"
+    dqs (@$t0 + 0x78) L? 3
+	.printf "\n"
+	u @$t1
+}
+.else
+{
+	.printf "clean openprocedure.\n"
+}
