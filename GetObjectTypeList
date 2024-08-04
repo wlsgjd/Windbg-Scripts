@@ -2,7 +2,7 @@ $$ GetObjectTypeList
 $$ 작성 버전 : Windows 10 Kernel Version 19041 MP (4 procs) Free x64 
 $$ 사용 방법 : GetObjectTypeList
 $$ 작성일 : 2023-11-14
-$$ 작성자 : cshelldll
+$$ 작성자 : wlsgjd
 
 $$ ProcessEntry
 r $t0 = poi(nt!PsActiveProcessHead)-448 

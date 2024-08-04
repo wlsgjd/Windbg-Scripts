@@ -2,7 +2,7 @@ $$ nt!ExpLookupHandleTableEntry - Windbg 스크립트 내부 구현
 $$ 작성 버전 : Windows 10 Kernel Version 19041 MP (8 procs) Free x64 
 $$ 사용 방법 : LookupPspCidTable [pid]
 $$ 작성일 : 2022-02-24
-$$ 작성자 : cshelldll
+$$ 작성자 : wlsgjd
 
 r $t0 = poi(nt!PspCidTable)
 r $t1 = ${$arg1} & 0xFFFFFFFFFFFFFFFC
