@@ -1,0 +1,21 @@
+$$ HandleTableList 프로세스 리스트
+$$ 작성 버전 : Windows 10 Kernel Version 19041 MP (4 procs) Free x64 
+$$ 사용 방법 : CheckHandleTableList
+$$ 작성일 : 2022-03-16
+$$ 작성자 : wlsgjd
+
+$$ ProcessEntry
+r $t0 = poi(nt!HandleTableListHead + 0x08)
+r $t1 = nt!HandleTableListHead
+r $t2 = 0
+
+.while(@$t0)
+{
+    r $t3 = poi(@$t0 - 0x08)
+    .if (@$t3 == 0) { .break }
+
+    .printf "%d %d %p %ma\n", @$t2, poi(@$t3+440),  @$t3, @$t3 + 5a8
+    r $t2 = @$t2+1
+    r $t0 = poi(@$t0+0x08)
+    .if (@$t0 == @$t1) { .break }
+}
