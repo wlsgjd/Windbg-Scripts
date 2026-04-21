@@ -1,0 +1,15 @@
+r $t0 = poi(nt!PiDDBCacheList)
+
+.for ( ; @$t0 != nt!PiDDBCacheList; r $t0 = poi(@$t0) ) {
+
+    .printf "====================\n"
+    .printf "Entry: %p\n", @$t0
+
+    .printf "Driver: "
+    du poi(@$t0 + 0x18)
+
+    .printf "Timestamp: "
+    dd (@$t0 + 0x20) L1
+
+    .printf "\n"
+}
